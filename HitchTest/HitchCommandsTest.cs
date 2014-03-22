@@ -1,44 +1,94 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Hitch;
-using System.IO;
 
 namespace HitchTest
 {
   [TestClass]
   public class HitchCommandsTest
   {
+
     [TestMethod]
     public void Test_print_info()
     {
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = aaaa bbbbbb\r\n\temail = email@test.com\r\n[difftool]");
+
       using (ConsoleRedirector cr = new ConsoleRedirector())
       {
-        Assert.IsFalse(cr.ToString().Contains("aaa"));
-        HitchCommands commands = new HitchCommands(new fake_gitconfig());
+        HitchCommands commands = new HitchCommands(fake);
         commands.print_info();
         Assert.AreEqual("aaaa bbbbbb <email@test.com>\r\n", cr.ToString());
       }
     }
 
-    internal class ConsoleRedirector : IDisposable
+
+    [TestMethod]
+    public void Test_print_infoNotSetup()
     {
-      private StringWriter _consoleOutput = new StringWriter();
-      private TextWriter _originalConsoleOutput;
-      public ConsoleRedirector()
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = \r\n\temail = \r\n[difftool]");
+      using (ConsoleRedirector cr = new ConsoleRedirector())
       {
-        this._originalConsoleOutput = Console.Out;
-        Console.SetOut(_consoleOutput);
-      }
-      public void Dispose()
-      {
-        Console.SetOut(_originalConsoleOutput);
-        Console.Write(this.ToString());
-        this._consoleOutput.Dispose();
-      }
-      public override string ToString()
-      {
-        return this._consoleOutput.ToString();
+        HitchCommands commands = new HitchCommands(fake);
+        commands.print_info();
+        Assert.AreEqual("HITCH Not Set!\r\n", cr.ToString());
       }
     }
+
+    [TestMethod]
+    public void TestUnhitch()
+    {
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = Developer\r\n\temail = developer@test.com\r\n[difftool]");
+      using (ConsoleRedirector cr = new ConsoleRedirector())
+      {
+        ICommands commands = new HitchCommands(fake);
+        commands.Configuration = new HitchSettings();
+        commands.unhitch();
+        Assert.AreEqual("UNHITCHED\r\n", cr.ToString());
+      }
+    }
+
+    [TestMethod]
+    public void TestAuthorCommand()
+    {
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = Developer\r\n\temail = developer@test.com\r\n[difftool]");
+      string[] args =  {"dev1", "dev2"};
+      using (ConsoleRedirector cr = new ConsoleRedirector())
+      {
+        HitchCommands commands = new HitchCommands(fake);
+        commands.Configuration = new HitchSettings();
+        commands.author_command(args);
+        Assert.AreEqual("HITCHED\r\ndev1 and dev2 <dev1+dev2@>\r\n", cr.ToString());
+      } 
+    }
+
+    [TestMethod]
+    public void TestVersion()
+    {
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = Developer\r\n\temail = developer@test.com\r\n[difftool]");
+      
+      using (ConsoleRedirector cr = new ConsoleRedirector())
+      {
+        HitchCommands commands = new HitchCommands(fake);
+        commands.Configuration = new HitchSettings();
+        commands.version();
+        Assert.IsTrue(cr.ToString().StartsWith("1.1."));
+      }
+    }
+
+    [TestMethod()]
+    [ExpectedException(typeof (System.NotSupportedException))]
+    public void TestInvalidCommend()
+    {
+      ISystemReader fake = new fakeGitconfig("[user]\r\n\tname = Developer\r\n\temail = developer@test.com\r\n[difftool]");
+      using (ConsoleRedirector cr = new ConsoleRedirector())
+      {
+        HitchCommands commands = new HitchCommands(fake);
+        commands.Configuration = new HitchSettings();
+        commands.invalid_command(new string[] {"-xyz"});
+      }
+    }
+
+
   }
 }

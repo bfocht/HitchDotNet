@@ -2,19 +2,30 @@
 
 namespace Hitch
 {
-  class Program
+  public class Program
   {
-    static void Main(string[] args)
+    public static ICommands commands;
+
+    public static void Main(string[] args)
     {
+      SystemGitConfig config = new SystemGitConfig();
       try
       {
-        
-        HitchCommands commands = new HitchCommands(new SystemGitConfig());
+        //allow for dependency injection
+        if (commands == null) commands = new HitchCommandPrompt(config);
+
         if (args.Length == 0)
         {
           commands.print_info();
           return;
         }
+
+        if (args.Length > 0 && (args[0] == "-s" || args[0] == "--setup"))
+        {
+          commands.setup();
+          return;
+        }
+
         if (args[0] == "-u" || args[0] == "--unhitch")
         {
           commands.unhitch();
@@ -25,32 +36,33 @@ namespace Hitch
           commands.version();
           return;
         }
-        if (args[0] == "-s" || args[0] == "--setup")
-        {
-          commands.setup();
-          return;
-        }
+
         if (args[0] == "judd")
         {
           Judd.quote();
           return;
         }
 
-        commands.author_command(args);
+        if (args[0].StartsWith("-"))
+        {
+          commands.invalid_command(args);
+          return;
+        }
         
+        commands.author_command(args);
+
       }
       catch (Exception ex)
       {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("ERROR : {0}",ex.Message);
-        
+        Console.WriteLine(ex.Message);
+
       }
-      finally 
+      finally
       {
         Console.ResetColor();
       }
-      
-    }
 
+    }
   }
 }

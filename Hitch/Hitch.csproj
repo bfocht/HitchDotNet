@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hitch</RootNamespace>
-    <AssemblyName>HitchdotNet</AssemblyName>
+    <AssemblyName>hitchp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,8 +44,10 @@
   <ItemGroup>
     <Compile Include="EnvironmentVariables.cs" />
     <Compile Include="GitConfigFileManager.cs" />
+    <Compile Include="HitchCommandPrompt.cs" />
     <Compile Include="HitchCommands.cs" />
     <Compile Include="HitchSettings.cs" />
+    <Compile Include="ICommands.cs" />
     <Compile Include="ISystemReader.cs" />
     <Compile Include="Judd.cs" />
     <Compile Include="Program.cs" />

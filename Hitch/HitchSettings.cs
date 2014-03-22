@@ -5,7 +5,7 @@ using System.Web.Script.Serialization;
 
 namespace Hitch
 {
-  class HitchSettings : AppSettings<HitchSettings>
+  public class HitchSettings : AppSettings<HitchSettings>
   {
     public string defaultEmail;
     public string defaultName;
@@ -41,8 +41,16 @@ namespace Hitch
     {
       T t = new T();
       if (File.Exists(Path.Combine(AssemblyDirectory, DEFAULT_FILENAME)))
-        t = (new JavaScriptSerializer()).Deserialize<T>(File.ReadAllText(Path.Combine(AssemblyDirectory, DEFAULT_FILENAME)));
+      {
+        t =
+          (new JavaScriptSerializer()).Deserialize<T>(File.ReadAllText(Path.Combine(AssemblyDirectory, DEFAULT_FILENAME)));
+      }
+      else
+      {
+        throw new Exception("Setup not configured.  Run hitch --setup first.");
+      }
       return t;
     }
+
   }
 }
