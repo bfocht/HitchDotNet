@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hitch", "Hitch\Hitch.csproj", "{0CD1F586-1340-4725-A967-CFD22C1A4BDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HitchTest", "HitchTest\HitchTest.csproj", "{4E8F6273-F3BC-4E83-816C-5E469B3D4315}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0CD1F586-1340-4725-A967-CFD22C1A4BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD1F586-1340-4725-A967-CFD22C1A4BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD1F586-1340-4725-A967-CFD22C1A4BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E8F6273-F3BC-4E83-816C-5E469B3D4315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E8F6273-F3BC-4E83-816C-5E469B3D4315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E8F6273-F3BC-4E83-816C-5E469B3D4315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E8F6273-F3BC-4E83-816C-5E469B3D4315}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
