@@ -40,7 +40,7 @@ namespace Hitch
     public static T Load(string fileName = DEFAULT_FILENAME)
     {
       T t = new T();
-      if (File.Exists(fileName))
+      if (File.Exists(Path.Combine(AssemblyDirectory, DEFAULT_FILENAME)))
         t = (new JavaScriptSerializer()).Deserialize<T>(File.ReadAllText(Path.Combine(AssemblyDirectory, DEFAULT_FILENAME)));
       return t;
     }
